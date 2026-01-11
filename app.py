@@ -6,8 +6,9 @@ from flask_cors import CORS
 
 simplefilter(action='ignore', category=UserWarning)
 
-app = Flask(__name__)
-CORS(app)
+# AWS Elastic Beanstalk очікує назву 'application' замість 'app'
+application = Flask(__name__)
+CORS(application)
 
 MODEL_PATH = 'model_artifacts/svc_best_classifier.pkl'
 SCALER_PATH = 'model_artifacts/scaler.pkl'
@@ -74,7 +75,7 @@ def preprocess_input(input_data):
     return loaded_scaler.transform(df)
 
 
-@app.route('/predict', methods=['POST'])
+@application.route('/predict', methods=['POST'])
 def predict():
     if not loaded_model or not loaded_scaler:
         return jsonify({
@@ -103,7 +104,7 @@ def predict():
         }), 500
 
 
-@app.route('/health', methods=['GET'])
+@application.route('/health', methods=['GET'])
 def health():
     return jsonify({
         'status': 'ok',
@@ -113,8 +114,5 @@ def health():
 
 
 if __name__ == '__main__':
-    print("Heart Disease Prediction API")
-    print(f"URL: http://127.0.0.1:5000/predict")
-    print(f"Model: SVC (RBF kernel)")
-    print(f"Features: {len(FEATURE_ORDER)}")
-    app.run(host='0.0.0.0', port=5000, debug=False)
+    # На локальній машині запускаємо через application.run
+    application.run(host='0.0.0.0', port=5000, debug=False)
