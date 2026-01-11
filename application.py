@@ -1,12 +1,12 @@
 import joblib
 import pandas as pd
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, render_template # ДОДАНО render_template
 from warnings import simplefilter
 from flask_cors import CORS 
 
 simplefilter(action='ignore', category=UserWarning)
 
-# AWS Elastic Beanstalk очікує назву 'application' замість 'app'
+# AWS Elastic Beanstalk очікує назву 'application'
 application = Flask(__name__)
 CORS(application)
 
@@ -31,6 +31,11 @@ except Exception as e:
     loaded_model = None
     loaded_scaler = None
 
+# --- НОВИЙ МАРШРУТ ДЛЯ ВІДОБРАЖЕННЯ ВАШОГО САЙТУ ---
+@application.route('/')
+def index():
+    # Ця функція шукає файл templates/index.html
+    return render_template('index.html')
 
 def preprocess_input(input_data):
     df = pd.DataFrame(0, index=[0], columns=FEATURE_ORDER)
@@ -114,5 +119,4 @@ def health():
 
 
 if __name__ == '__main__':
-    # На локальній машині запускаємо через application.run
     application.run(host='0.0.0.0', port=5000, debug=False)
