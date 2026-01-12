@@ -30,7 +30,9 @@ jobs:
         curl -fs http://localhost:5000/health > /dev/null
 
   CD:
+    needs: CI
     runs-on: self-hosted
+    
 
     steps:
     - name: run Playbook
