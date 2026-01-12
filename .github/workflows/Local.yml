@@ -29,4 +29,12 @@ jobs:
 
         curl -fs http://localhost:5000/health > /dev/null
 
-      
+  CD:
+    runs-on: self-hosted
+
+    steps:
+    - name: run Playbook
+      run: |
+        ansible-playbook ./ansible/DeployServer.yml
+
+        
