@@ -5,7 +5,7 @@ on: [workflow_dispatch]
 
 jobs: 
   CI:
-    runs-on: flask-runner
+    runs-on: self-hosted
 
     steps:
      - name: test
