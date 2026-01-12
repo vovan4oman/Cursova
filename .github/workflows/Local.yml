@@ -37,6 +37,6 @@ jobs:
     steps:
     - name: run Playbook
       run: |
-        ansible-playbook ./ansible/DeployServer.yml
+        ansible-playbook -i ./ansible/hosts.txt  ./ansible/DeployServer.yml
 
         
