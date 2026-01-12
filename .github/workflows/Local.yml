@@ -8,7 +8,25 @@ jobs:
     runs-on: self-hosted
 
     steps:
-     - name: test
-       run: echo "Hello"
-  
+    - name: Git-clone
+      uses: actions/checkout@v4
 
+
+    - name: Setup Flask
+      run: pip install -r requirements.txt 
+
+
+    - name: Start Server
+      run: |
+        python3 application.py > server.log 2>&1 &
+        echo "Чекаємо 20 секунд на завантаження моделей"
+        sleep 20
+
+    - name: Test
+      run: | 
+        response=$(curl -s http://localhost:5000/health)
+        echo "Відповідь сервера: $response"
+
+        curl -fs http://localhost:5000/health > /dev/null
+
+      
