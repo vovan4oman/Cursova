@@ -1,0 +1,14 @@
+name: Deploy-to-local
+
+on: [workflow_dispatch]
+
+
+jobs: 
+  CI:
+    runs-on: flask-runner
+
+    steps:
+     - name: test
+       run: echo "Hello"
+  
+
