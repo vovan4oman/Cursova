@@ -1,0 +1,91 @@
+---
+- name: Deploy Heart Disease App
+  hosts: all
+  become: yes
+
+  tasks:
+    - name: Install Pack
+      apt:
+        name:
+          - nginx
+          - python3
+          - python3-pip
+          - rsync
+        state: present
+        update_cache: yes
+
+    - name: Copy project to server
+      synchronize:
+        src: "/home/adm1n/runner/actions-runner/_work/Cursova/Cursova/"
+        dest: "/var/www/cursova"
+        recursive: yes
+        rsync_opts:
+          - "--exclude=.git"
+          - "--exclude=.github"
+          - "--exclude=ansible"
+      notify: restart flask
+
+    - name: Install Python dependencies
+      pip:
+        requirements: "/var/www/cursova/requirements.txt"
+        executable: pip3
+        extra_args: "--break-system-packages --ignore-installed "
+
+    - name: Copy Nginx conf
+      copy:
+        src: "./flask_app"
+        dest: "/etc/nginx/sites-available/flask_app"
+      notify: restart nginx
+
+    - name: Enable Nginx config
+      file:
+        src: "/etc/nginx/sites-available/flask_app"
+        dest: "/etc/nginx/sites-enabled/flask_app"
+        state: link
+
+    - name: Remove defaults from Nginx
+      file:
+        path: "/etc/nginx/sites-enabled/default"
+        state: absent
+
+    - name: Create Systemd service
+      copy:
+        dest: /etc/systemd/system/flask_app.service
+        content: |
+          [Unit]
+          Description=Flask Heart Disease App
+          After=network.target
+
+          [Service]
+          User=user
+          Group=user
+          WorkingDirectory=/var/www/cursova
+          ExecStart=/usr/bin/python3 application.py
+          Restart=always
+
+          [Install]
+          WantedBy=multi-user.target
+
+    - name: Start Nginx
+      service:
+        name: nginx
+        state: started
+        enabled: yes
+
+    - name: start Flask Service
+      service:
+        name: flask_app
+        state: started
+        enabled: yes
+        daemon_reload: yes
+
+  handlers:
+    - name: restart nginx
+      service:
+        name: nginx
+        state: restarted
+
+    - name: restart flask
+      service:
+        name: flask_app
+        state: restarted
