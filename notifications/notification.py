@@ -7,7 +7,7 @@ def send_telegram_msg(status):
     chat_id = os.getenv('TGID')
     repo = os.getenv('GITHUB_REPOSITORY')
     run_id = os.getenv('GITHUB_RUN_ID')
-    SS
+    
     
     run_url = f"https://github.com/{repo}/actions/runs/{run_id}"
     
