@@ -23,6 +23,7 @@
           - "--exclude=.git"
           - "--exclude=.github"
           - "--exclude=ansible"
+          - "--exclude=notifications"
       notify: restart flask
 
     - name: Install Python dependencies
