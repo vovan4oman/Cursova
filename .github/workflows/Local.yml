@@ -39,7 +39,7 @@ jobs:
     - name: Create inventory file
       run: |
         echo "[flaskserver]" > ./ansible/hosts.txt
-        echo "server1 ansible_host=${{ secrets.IPSERVER }} ansible_user=${{ secrets.SERVER_USER }}" >> ./ansible/hosts.txt
+        echo "server1 ansible_host=${{ secrets.IPSERVER }} ansible_user=${{ secrets.SERVERUSER }}" >> ./ansible/hosts.txt
 
 
     
