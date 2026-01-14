@@ -32,9 +32,17 @@ jobs:
   CD:
     needs: CI
     runs-on: self-hosted
+
     
 
     steps:
+    - name: Create inventory file
+      run: |
+        echo "[flaskserver]" > ./ansible/hosts.txt
+        echo "server1 ansible_host=${{ secrets.IPSERVER }} ansible_user=${{ secrets.SERVER_USER }}" >> ./ansible/hosts.txt
+
+
+    
     - name: run Playbook
       run: |
         ansible-playbook -i ./ansible/hosts.txt  ./ansible/DeployServer.yml
