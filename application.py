@@ -6,7 +6,7 @@ from flask_cors import CORS
 
 simplefilter(action='ignore', category=UserWarning)
 
-# AWS Elastic Beanstalk очікує назву 'application'
+
 application = Flask(__name__)
 CORS(application)
 
@@ -31,7 +31,6 @@ except Exception as e:
     loaded_model = None
     loaded_scaler = None
 
-# --- НОВИЙ МАРШРУТ ДЛЯ ВІДОБРАЖЕННЯ ВАШОГО САЙТУ ---
 @application.route('/')
 def index():
     # Ця функція шукає файл templates/index.html
