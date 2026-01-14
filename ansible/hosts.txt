@@ -1,2 +1,1 @@
-[flaskserver]
-user ansible_host= ${{ secrets.IPSERVER }}
+Text in playbook
