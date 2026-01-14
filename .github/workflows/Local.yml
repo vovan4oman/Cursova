@@ -55,7 +55,7 @@ jobs:
         BOTAPI: ${{ secrets.BOTAPI }}
       run: |
         pip install requests
-        python ./notofications/notification.py ${{ job.status }}
+        python3 ./notofications/notification.py ${{ job.status }}
         
       
 
