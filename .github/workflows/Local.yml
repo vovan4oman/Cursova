@@ -47,4 +47,16 @@ jobs:
       run: |
         ansible-playbook -i ./ansible/hosts.txt  ./ansible/DeployServer.yml
 
+
+    - name: Notification in Telegram
+      if: always()
+      env:
+        TGID: ${{ secrets.TGID }}
+        BOTAPI: ${{ secrets.BOTAPI }}
+      run: |
+        pip install requests
+        python ./notofications/notification.py ${{ job.status }}
+        
+      
+
         
